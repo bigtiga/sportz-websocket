@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --watch src/index.js",
-    "start" : "node src/index.js"
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +12,12 @@
   "type": "module",
   "description": "",
   "dependencies": {
-    "express": "^5.2.1"
+    "@neondatabase/serverless": "^1.1.0",
+    "@types/ws": "^8.18.1",
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
+    "express": "^5.2.1",
+    "pg": "^8.22.0",
+    "ws": "^8.21.3"
   }
 }
