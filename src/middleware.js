@@ -11,13 +11,17 @@ export function validate(schema) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({
           error: 'Validation failed',
-          details: error.errors.map(e => ({
+          details: error.errors?.map(e => ({
             field: e.path.join('.'),
             message: e.message,
-          })),
+          })) || [{ message: 'Invalid data provided' }],
         });
       }
-      next(error);
+      // Handle other errors
+      return res.status(400).json({
+        error: 'Validation failed',
+        message: error.message || 'Invalid data provided',
+      });
     }
   };
 }

@@ -61,3 +61,14 @@ export const betSchema = z.object({
   amount: z.number().positive('Bet amount must be positive'),
   odds: z.number().positive('Odds must be positive'),
 });
+
+
+export const updateProfileSchema = z.object({
+  username: z.string().min(3).max(30).optional(),
+  email: z.string().email().optional(),
+});
+
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1, 'Current password is required'),
+  newPassword: z.string().min(6, 'New password must be at least 6 characters'),
+});

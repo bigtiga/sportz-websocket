@@ -9,7 +9,6 @@ import { matchSchema, matchUpdateSchema, commentarySchema, wsMessageSchema } fro
 import { validate } from './middleware.js';
 import authRoutes from './auth-routes.js';
 import betRoutes from './bet-routes.js';
-import cors from 'cors';
 
 dotenv.config();
 
@@ -17,8 +16,21 @@ const app = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
-// ===== CORS Middleware =====
-app.use(cors());
+// ===== CORS Middleware (MUST BE FIRST) =====
+app.use((req, res, next) => {
+  // Allow all origins
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept, X-Requested-With');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(express.json());
 
 // Store wss instance for bet routes
@@ -348,5 +360,5 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`⚙️  Max connections: ${CONFIG.MAX_CONNECTIONS}`);
   console.log(`⏰ Idle timeout: ${CONFIG.IDLE_TIMEOUT/1000}s`);
   console.log(`✅ Zod validation is active!`);
-  console.log(`✅ CORS enabled!`);
+  console.log(`✅ CORS enabled: Allow all origins`);
 });
